@@ -43,11 +43,11 @@
 
 	function renderPosts(posts) {
 		postsDust();
-
 		tiptoe(
 			function first() {
-				var rank = 0;
-				posts.forEach(function(entry) {
+				var rank;
+				for (rank = 0; rank < posts.length; rank++) {
+					var entry = posts[rank];
 					if (entry.data.thumbnail && entry.data.thumbnail == 'self')
 						delete(entry.data.thumbnail);
 					if (entry.data.selftext) {
@@ -60,22 +60,18 @@
 						else if (entry.data.likes === false)
 							entry.data.thingCss = 'downvoted';
 					}
-					entry.data.rank = ++rank;
+					entry.data.rank = rank + 1;
 					dust.render('r', entry.data, this.parallel());
-				}.bind(this));
+				}
 			},
 			function populate() {
-				var contents = '';
-				Array.prototype.slice.call(arguments).forEach(function(c) {
-					contents += c;
-				});
-
+				var contents = Array.prototype.slice.call(arguments).join('');
 				this(null, contents);
 			},
 			function finish(err, contents) {
 				if (err)
 					throw(err);
-				console.log('finish()')
+
 				$('#content').html(contents);
 			}
 		);
@@ -159,7 +155,9 @@
 	exports.getTTL = getTTL;
 	exports.loadPosts = loadPosts;
 
-	$(window).ready(init);
+	if (window) {
+		$(window).ready(init);
+	}
 })(window.r = window.r || {});
 
 $(window).ready(function() {
