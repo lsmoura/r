@@ -67,6 +67,14 @@
 							entry.data.thingCss = 'downvoted';
 					}
 					entry.data.rank = rank + 1;
+					
+					// Date stuff
+					var postDate = new Date(entry.data.created_utc * 1000);
+					entry.data.postDate = postDate.toString();
+					entry.data.isoDate = postDate.toISOString();
+					entry.data.relativeTime = postDate.toRelativeTime();
+
+					// Render the post and pass to next function
 					dust.render('r', entry.data, this.parallel());
 				}
 			},
