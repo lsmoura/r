@@ -1,6 +1,6 @@
 "use strict";
 
-(function(exports) {
+(function(exports, $) {
 	var sessionCredentialsKey = 'authentication';
 	var credentials = {
 		username: '',
@@ -14,6 +14,13 @@
 	// Dust stuff;
 	var template = null;
 	var compiled = null;
+
+	// Setup common functions on posts.
+	function setupClicks() {
+		$('.expand-button').click(function() {
+			$(this).parent().find('.contents').toggle()
+		});
+	}
 
 	// Initialize dust for posts and leave it ready to roll.
 	function postsDust() {
@@ -73,6 +80,7 @@
 					throw(err);
 
 				$('#content').html(contents);
+				setupClicks();
 			}
 		);
 	}
@@ -158,7 +166,7 @@
 	if (window) {
 		$(window).ready(init);
 	}
-})(window.r = window.r || {});
+})((window.r = window.r || {}), jQuery || $);
 
 $(window).ready(function() {
 	$('#settings').on('show.bs.modal', function() {
