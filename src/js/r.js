@@ -11,6 +11,76 @@
 		expires_in: 0
 	};
 
+	// Dust stuff;
+	var template = null;
+	var compiled = null;
+
+	// Initialize dust for posts and leave it ready to roll.
+	function postsDust() {
+		if (template == null) {
+			template = $('#r_dust').html();
+		}
+		if (compiled == null) {
+			compiled = dust.compile(template, 'r');
+		}
+
+		dust.loadSource(compiled);
+		return(dust);
+	}
+
+	function parseText(text) {
+		if (!text)
+			return(text);
+
+		var ret = text;
+
+		ret = ret.replace(/\*\*([^\*\n]*)\*\*/g, '<b>$1</b>');
+		ret = ret.replace(/\*([^\*\n]*)\*/g, '<i>$1</i>');
+		ret = ret.replace(/\n\n/g, '<br />');
+
+		return(ret);
+	}
+
+	function renderPosts(posts) {
+		postsDust();
+
+		tiptoe(
+			function first() {
+				var rank = 0;
+				posts.forEach(function(entry) {
+					if (entry.data.thumbnail && entry.data.thumbnail == 'self')
+						delete(entry.data.thumbnail);
+					if (entry.data.selftext) {
+						entry.data.formattedText = parseText(entry.data.selftext);
+						console.log(entry.data.formattedText);
+					}
+					if (entry.data.likes !== undefined) {
+						if (entry.data.likes === true)
+							entry.data.thingCss = 'upvoted';
+						else if (entry.data.likes === false)
+							entry.data.thingCss = 'downvoted';
+					}
+					entry.data.rank = ++rank;
+					dust.render('r', entry.data, this.parallel());
+				}.bind(this));
+			},
+			function populate() {
+				var contents = '';
+				Array.prototype.slice.call(arguments).forEach(function(c) {
+					contents += c;
+				});
+
+				this(null, contents);
+			},
+			function finish(err, contents) {
+				if (err)
+					throw(err);
+				console.log('finish()')
+				$('#content').html(contents);
+			}
+		);
+	}
+
 	function loadCredentials() {
 		if (sessionStorage.getItem(sessionCredentialsKey) != null) {
 			credentials = JSON.parse(sessionStorage.getItem(sessionCredentialsKey));
@@ -49,11 +119,47 @@
 			saveCredentials(credentials);
 			redditapi.auth(credentials);
 		});
-	};	
+	};
+
+	// This function needs a better name.
+	// Return remaining seconds that our current credentials are valid.
+	function getTTL() {
+		if (credentials.expires_in <= 0)
+			return(0);
+
+		var ttl = (credentials.expires_in - ((new Date()).getTime() - credentials.lastFetch.getTime()) / 3600).toFixed(0);
+		if (ttl <= 0) {
+			credentials.expires_in = 0; // Expired.
+			ttl = 0;
+		}
+
+		return(ttl);
+	}
+
+	function loadPosts(subreddit, method) {
+		redditapi.posts(function(answer) {
+			// Save cache
+			sessionStorage.setItem('cache', JSON.stringify(answer));
+			renderPosts(answer.data.children);
+		}, subreddit, method);
+	}
+
+	function init() {
+		var cacheRaw = sessionStorage.getItem('cache');
+		if (cacheRaw == null)
+			return;
+
+		var cache = JSON.parse(cacheRaw);
+		renderPosts(cache.data.children);
+	}
 
 	exports.loadCredentials = loadCredentials;
 	exports.saveCredentials = saveCredentials;
 	exports.reloadCredentials = reloadCredentials;
+	exports.getTTL = getTTL;
+	exports.loadPosts = loadPosts;
+
+	$(window).ready(init);
 })(window.r = window.r || {});
 
 $(window).ready(function() {
@@ -76,5 +182,22 @@ $(window).ready(function() {
 		};
 
 		r.saveCredentials(newCredentials);
-	})
+	});
+
+	$('#btn-home').on('click', function() {
+		r.loadPosts();
+	});
+
+	// This is experimental
+	function DisplayTTL() {
+		var ttl = r.getTTL();
+		$('#ttl').html(ttl + ' sec');
+
+		if (ttl > 0) {
+			setTimeout(DisplayTTL, 998);
+		}
+	}
+	r.loadCredentials();
+	window.DisplayTTL = DisplayTTL;
+	DisplayTTL();
 });

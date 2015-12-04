@@ -10,11 +10,46 @@
 	<script type="text/javascript" src="js/dust-full.min.js"></script>
 	<script type="text/javascript" src="js/redditapi.js"></script>
 	<link rel="stylesheet" href="css/r.css" />
+	<script type="text/javascript" src="js/tiptoe.js"></script>
 	<script type="text/javascript" src="js/r.js"></script>
+	<script type="text/dust" id="r_dust">
+		<div class="thing id-{name} {thingCss} r-{subreddit}" id="thing_{name}" data-thingid="{id}">
+			<span class="rank">{rank}</span>
+			<div class="midcol">
+				<div class="glyphicon glyphicon-arrow-up upvote"></div>
+				<div class="score">{score}</div>
+				<div class="glyphicon glyphicon-arrow-down downvote"></div>
+			</div>
+			{?thumbnail}<a class="thumbnail may-blank"><img src="{thumbnail}" width="70" height="39" alt=""></a>{/thumbnail}
+			<div class="entry">
+				<div class="tags">
+					<div class="subreddit">{subreddit}</div>
+				</div>
+				<p class="title">
+					<a class="title may-blank" href="{permalink}" tabindex="1">{title}</a>
+					&nbsp;<a href="{url}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>
+				</p>
+				{?selftext}<div class="expand-button glyphicon glyphicon-expand"></div>{/selftext}
+				<p class="tagline">submitted <time title="Thu Nov 19 02:16:43 2015 UTC" datetime="2015-11-19T02:16:43+00:00" class="live-timestamp">10 hours ago</time> by <a href="https://www.reddit.com/user/{author}" class="author may-blank id-t2_fowvy">{author}</a><span class="userattrs"></span> to <a href="/r/{subreddit}" class="subreddit hover may-blank">/r/{subreddit}</a></p>
+				<ul class="flat-list buttons">
+					<li><span class="comments"><span class="glyphicon glyphicon-comment"></span> {num_comments}</span></li>
+					<li class="share"><a class="post-sharing-button" href="javascript: void 0;">share</a></li>
+					<li class="link-save-button save-button"><a href="#">save</a></li>
+					<li><form action="/post/hide" method="post" class="state-button hide-button"><input type="hidden" name="executed" value="hidden"><span><a href="javascript:void(0)" class=" " onclick="change_state(this, 'hide', hide_thing);">hide</a></span></form></li>
+					<li class="report-button"><a href="javascript:void(0)" class="action-thing access-required" data-action-form="#report-action-form" data-event-action="report">report</a></li>
+				</ul>
+				<div class="contents">{formattedText|s}</div>
+				<div class="comments-box"></div>
+			</div>
+			<div class="clearleft"></div>
+		</div>
+	</script>
 </head>
 <body>
 	<div id="header">
 		<div class="commands">
+			<span id="ttl"></span>
+			<button type="button" class="btn btn-default btn-sm" id="btn-home">Home</button>
 			<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#settings">Settings</button>
 			<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#about">About</button>
 		</div>

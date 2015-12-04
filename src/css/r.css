@@ -12,3 +12,77 @@ h1 {
 	padding: 0.25em;
 	float: right;
 }
+
+/* THING */
+.thing {
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 0.2em;
+}
+
+.thing .rank {
+	text-align: center;
+	width: 2.2ex;
+	margin-top: 18px;
+	float: left;
+}
+
+.thing .midcol {
+	float: left;
+	margin: 0 7px;
+	width: 6ex;
+}
+
+.thing .midcol > * {
+	width: 100%;
+	text-align: center;
+}
+
+.thing .thumbnail {
+	float: left;
+	margin: 2px 5px;
+}
+
+.thing .flat-list {
+	font-size: smaller;
+	list-style-type: none;
+	list-style: none;
+	margin: 0;
+	padding: 0;	
+}
+
+.thing .flat-list li {
+	margin-right: 1em;
+	display: inline-block;
+}
+
+.thing .flat-list a {
+	font-weight: bold;
+}
+
+.thing .entry {
+	overflow: hidden;
+}
+
+.thing .tags {
+	float: right;
+	font-size: smaller;
+}
+
+.thing .tags > div {
+	display: inline-block;
+	margin-left: 1em;
+	padding: 0 1ex;
+}
+
+.thing .contents, .thing .comments-box {
+	padding: 0.5em;
+	border: 1px solid #444;
+	border-radius: 7px;
+	display: none;
+}
+
+/* === */
+
+.clearleft {
+	clear: left;
+}
