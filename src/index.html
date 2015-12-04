@@ -7,12 +7,56 @@
 	<link rel="stylesheet" href="css/bootstrap.min.css" />
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/npm.js"></script>
 	<script type="text/javascript" src="js/dust-full.min.js"></script>
+	<script type="text/javascript" src="js/redditapi.js"></script>
+	<link rel="stylesheet" href="css/r.css" />
+	<script type="text/javascript" src="js/r.js"></script>
 </head>
 <body>
-	<div id="header"></div>
+	<div id="header">
+		<div class="commands">
+			<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#settings">Settings</button>
+			<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#about">About</button>
+		</div>
+		<h1>R</h1>
+	</div>
 	<div id="content"></div>
 	<div id="footer"></div>
+
+	<div id="settings" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Settings</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<label for="settings-clientid">Client ID</label>
+						<input type="text" class="form-control" id="settings-clientid" placeholder="Client ID" />
+						<label for="settings-clientsecret">Client Secret</label>
+						<input type="text" class="form-control" id="settings-clientsecret" placeholder="Client Secret" />
+						<label for="settings-username">Redit Username</label>
+						<input type="text" class="form-control" id="settings-username" placeholder="Username" />
+						<label for="settings-password">Reddit Password</label>
+						<input type="text" class="form-control" id="settings-password" placeholder="Password" />
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="settings-save">Save settings</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="about" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">About R</div>
+				<div class="modal-body">R is a web Reddit client, written in javascript.<br />It stores no data on any server (except for reddit itself).</div>
+				<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>
+			</div>
+		</div>
+	</div>	
 </body>
 </html>

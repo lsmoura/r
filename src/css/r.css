@@ -1,0 +1,14 @@
+h1 {
+	margin: 0;
+	padding: 0;
+}
+
+#header {
+	padding: 0 1em;
+	border-bottom: 1px solid #ccc;
+}
+
+#header .commands {
+	padding: 0.25em;
+	float: right;
+}
