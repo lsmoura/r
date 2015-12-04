@@ -59,7 +59,6 @@
 						delete(entry.data.thumbnail);
 					if (entry.data.selftext) {
 						entry.data.formattedText = parseText(entry.data.selftext);
-						console.log(entry.data.formattedText);
 					}
 					if (entry.data.likes !== undefined) {
 						if (entry.data.likes === true)
