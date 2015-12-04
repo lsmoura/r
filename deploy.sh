@@ -8,6 +8,9 @@ mkdir -p public/{css,fonts,js,img}
 cp -a src/* public/
 
 # Dependencies
+## API
+cp submodules/redditapi/redditapi.js public/js/
+
 ## Dust
 cp -a submodules/dust/dist/dust-full.min.js public/js/
 

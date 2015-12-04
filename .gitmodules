@@ -7,3 +7,6 @@
 	url = https://github.com/linkedin/dustjs.git
         branch = v2.7.2
 
+[submodule "submodules/redditapi"]
+	path = submodules/redditapi
+	url = https://github.com/lsmoura/redditapi.git
